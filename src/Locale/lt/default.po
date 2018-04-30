@@ -1,0 +1,184 @@
+msgid "Furniture"
+msgstr "Baldai"
+
+msgid "furniture"
+msgstr "baldai"
+
+msgid "New Furniture"
+msgstr "Naujas Baldas"
+
+msgid "Name"
+msgstr "Pavadinimas"
+
+msgid "Price"
+msgstr "Kaina"
+
+msgid "Discount"
+msgstr "Nuolaida"
+
+msgid "Status"
+msgstr "Statusas"
+
+msgid "Priority"
+msgstr "Prioritetas"
+
+msgid "Created"
+msgstr "Sukurta"
+
+msgid "Modified"
+msgstr "Redaguota"
+
+msgid "Actions"
+msgstr "Veiksmai"
+
+msgid "View"
+msgstr "Peržiūrėti"
+
+msgid "Edit"
+msgstr "Radaguoti"
+
+msgid "Delete"
+msgstr "Ištrinti"
+
+msgid "Visible"
+msgstr "Matomas"
+
+msgid "Invisible"
+msgstr "Nematomas"
+
+msgid "Created and maintained by:"
+msgstr "Sukūrė ir prižiūri:"
+
+msgid "NAVIGATION"
+msgstr "NAVIGACIJA"
+
+msgid "Version"
+msgstr "Versija"
+
+msgid "Sign out"
+msgstr "Atsijungti"
+
+msgid "List Furniture"
+msgstr "Baldų Sąrašas"
+
+msgid "Edit Furniture"
+msgstr "Redaguoti Baldą"
+
+msgid "Pictures"
+msgstr "Nuotraukos"
+
+msgid "Description"
+msgstr "Aprašymas"
+
+msgid "Add Furniture"
+msgstr "Sukurti Baldą"
+
+msgid "Choose one or more pictures. Supported formats: .png, .jpg"
+msgstr "Pasirinkite vieną ar daugiau nuotraukų. Palaikomi formatai: .png, .jpg"
+
+msgid "Create"
+msgstr "Sukurti"
+
+msgid "Save"
+msgstr "Išsaugoti"
+
+msgid "Add more pictures"
+msgstr "Pridėkite naujų nuotraukų"
+
+msgid "Are you sure you want to delete"
+msgstr "Ar tikrai norite ištrinti"
+
+msgid "Set Invisible"
+msgstr "Padaryti Nematomu"
+
+msgid "Set Visible"
+msgstr "Padaryti Matomu"
+
+msgid "The furniture visibility has been changed."
+msgstr "Baldo matomumas sėkmingai pakeistas."
+
+msgid "The furniture visibility could not be changed."
+msgstr "Baldo matomumas nepakeistas."
+
+msgid "The furniture has been deleted."
+msgstr "Baldas ištrintas."
+
+msgid "The furniture could not be deleted. Please, try again."
+msgstr "Baldas neištrintas. Bandykite dar kartą."
+
+msgid "The furniture has been saved."
+msgstr "Baldas išsaugotas."
+
+msgid "The furniture could not be saved. Please, try again."
+msgstr "Baldas neišsaugotas. Bandykite dar kartą."
+
+msgid "Did you really think you are allowed to see that"
+msgstr "Prašome prisijungti"
+
+msgid "Username or password is incorrect"
+msgstr "Vartotojo vardas arba slaptazodis neteisingi"
+
+msgid "Success"
+msgstr "Pavyko"
+
+msgid "Error"
+msgstr "Klaida"
+
+msgid "Info"
+msgstr "Informacija"
+
+msgid "Email"
+msgstr "El. paštas"
+
+msgid "Password"
+msgstr "Slaptažodis"
+
+msgid "Sign in"
+msgstr "Prisijungti"
+
+msgid "Log in"
+msgstr "Prisijungti"
+
+msgid "Sign in to start your session"
+msgstr "Sveiki atvyke! Prašome prisijungti."
+
+msgid "Did you really think you are allowed to see that?"
+msgstr "Prašome prisijungti."
+
+msgid "Furniture list"
+msgstr "Baldų Sąrašas"
+
+msgid "Change password"
+msgstr "Pakeisti slaptažodį"
+
+msgid "Current password"
+msgstr "Dabartinis slaptažodis"
+
+msgid "New password"
+msgstr "Naujas slaptažodis"
+
+msgid "Confirm new password"
+msgstr "Pakartokite naują slaptažodį"
+
+msgid "Dashboard"
+msgstr "Prietaisų skydas"
+
+
+msgid "Old password is incorrect."
+msgstr "Senas slaptažodis neteisingas."
+
+msgid "New passwords don't match."
+msgstr "Nauji slaptažodžiai nesutampa."
+
+msgid "Password changed successfully."
+msgstr "Slaptažodis sėkmingai pakeistas."
+
+msgid "Error while saving new password."
+msgstr "Klaida bandant išsaugoti naują slaptažodį."
+
+
+
+
+
+
+
