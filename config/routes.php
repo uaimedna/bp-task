@@ -48,9 +48,9 @@ Router::scope('/', function (RouteBuilder $routes) {
      * its action called 'display', and we pass a param to select the view file
      * to use (in this case, src/Template/Pages/home.ctp)...
      */
-    $routes->connect('/admin/dashboard', ['controller' => 'Pages', 'action' => 'dashboard']);
+    $routes->connect('/admin/dashboard', ['controller' => 'Videos', 'action' => 'index']);
     $routes->connect('/admin', ['controller' => 'Users', 'action' => 'login']);
-    $routes->connect('/', ['controller' => 'Users', 'action' => 'login']);
+    $routes->connect('/', ['controller' => 'Videos', 'action' => 'index']);
     
 
     /**

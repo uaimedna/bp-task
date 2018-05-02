@@ -113,18 +113,10 @@
                 <li class="header"><?= __('NAVIGATION') ?></li>
                 <li data-link-match="dashboard">
                     <a href="<?= $this->Url->build([
-                        "controller" => "Pages",
-                        "action" => "dashboard"
+                        "controller" => "Videos",
+                        "action" => "index"
                     ]); ?>">
-                        <i class="fa fa-server"></i> <span><?= __('Dashboard') ?></span>
-                    </a>
-                </li>
-                <li data-link-match="adashboard">
-                    <a href="<?= $this->Url->build([
-                        "controller" => "Pages",
-                        "action" => "dashboard"
-                    ]); ?>">
-                        <i class="fa fa-server"></i> <span><?= __('Dashboard') ?></span>
+                        <i class="fa fa-youtube"></i> <span><?= __('Videos') ?></span>
                     </a>
                 </li>
             </ul>

@@ -21,6 +21,8 @@ use Cake\Console\Shell;
 class YoutubeShell extends Shell
 {
     const CREDENTIALS_PATH = ROOT . '/config/Keys/php-yt-oauth2.json';
+    const TEST_CHANNEL_ID = 'UCtinbF-Q-fVthA0qrFQTgXQ'; //casey neistat
+
     protected $client;
     protected $service;
 
@@ -28,6 +30,9 @@ class YoutubeShell extends Shell
         // Define an object that will be used to make all API requests.
         $this->client = $this->getClient();
         $this->service = new \Google_Service_YouTube($this->client);
+
+        $this->loadModel('Videos');
+        $this->loadModel('VideoStats');
 
         if (isset($_GET['code'])) {
             if (strval($_SESSION['state']) !== strval($_GET['state'])) {
@@ -48,25 +53,6 @@ class YoutubeShell extends Shell
             exit;
         }
         parent::__construct();
-    }
-
-    /**
-     * Start the shell and interactive console.
-     *
-     * @return int|null
-     */
-    public function main()
-    {
-        var_dump('test');
-        die();
-    }
-
-    public function fuck()
-    {
-        var_dump('before');
-        $this->channelsListByUsername($this->service, 'snippet,contentDetails,statistics', array('forUsername' => 'GoogleDevelopers'));
-        var_dump('fuck idy');
-        die();
     }
 
     protected function getClient() {
@@ -107,7 +93,7 @@ class YoutubeShell extends Shell
         // Refresh the token if it's expired.
         if ($client->isAccessTokenExpired()) {
             $client->refreshToken($client->getRefreshToken());
-            file_put_contents($credentialsPath, $client->getAccessToken());
+            file_put_contents($credentialsPath, serialize($client->getAccessToken()));
         }
         return $client;
     }
@@ -124,20 +110,68 @@ class YoutubeShell extends Shell
         }
         return str_replace('~', realpath($homeDirectory), $path);
     }
-    
-    protected function channelsListByUsername($service, $part, $params) {
-        $params = array_filter($params);
-        $response = $this->service->channels->listChannels(
-            $part,
-            $params
+
+    /**
+     * Bonus method.. scrapes multiple chanels
+     */
+    public function scrapeMultiChanel($chanelIds)
+    {
+        //we could get chanel ids from doing random searching thorugh api or searching for related videos to those that we already have
+        foreach ($chanelIds as $id) {
+            $this->scrapeChanel($id);
+        }
+    }
+
+    public function scrapeChanel($chanelId = YoutubeShell::TEST_CHANNEL_ID)
+    {
+        $videos = $this->getVideoList($chanelId);
+
+        //create videos
+        foreach ($videos as $video) {
+            $tags = $video['snippet']['tags'];
+            $videoEntity = $this->Videos->newEntity([
+                'video_id' => $video['id'],
+                'channel_id' => $chanelId,
+                'tags' => implode(",", $tags ? $tags : []),
+                'performanse_rating' => 1
+            ]);
+            $this->Videos->save($videoEntity);
+        }
+
+        //update statistics
+        foreach ($videos as $video) {
+            $videoStatEntity = $this->VideoStats->newEntity([
+                'video_id' => $video['id'],
+                'view_count' => $video['statistics']['viewCount']
+            ]);
+            $this->VideoStats->save($videoStatEntity);
+        }
+
+    }
+
+    function getVideoList($chanelId) {
+        //I do realise theres more than 50 results so we would have to go thorugh all available pages 50 results at a time. But this is out of the scope
+        $response = $this->service->search->listSearch(
+            'snippet, id',
+            [
+                'channelId' => $chanelId,
+                'order' => 'date',
+                'maxResults' => 50
+            ]
         );
 
-        $description = sprintf(
-            'This channel\'s ID is %s. Its title is %s, and it has %s views.',
-            $response['items'][0]['id'],
-            $response['items'][0]['snippet']['title'],
-            $response['items'][0]['statistics']['viewCount']);
-        print $description . "\n";
+        $videoIds = [];
+        foreach ($response['items'] as $item) {
+            $videoIds[] = $item['id']['videoId'];
+        }
+
+        $response = $this->service->videos->listVideos(
+            'statistics, snippet',
+            [
+                'id' => implode(",", $videoIds),
+            ]
+        );
+        return $response;
     }
 
 }
