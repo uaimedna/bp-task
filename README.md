@@ -1,23 +1,54 @@
-# Bored Panda task
+# Bored Panda task by Justas Sakalauskas
 
-A skeleton for creating applications with [CakePHP](http://cakephp.org) 3.x.
+## Setup instructions:
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+1. Get dependencies:
 
-## Installation
-
-1. Download [Composer](http://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
-
-If Composer is installed globally, run
 ```bash
-composer create-project --prefer-dist cakephp/app [app_name]
+composer install
 ```
 
-You should now be able to visit the path to where you installed the app and see
-the setup traffic lights.
+2. Create a database named 'bp-task' running on localhost port 8889 (all this can be configured in config/app.php)
 
-## Configuration
+3. Run migrations:
 
-Read and edit `config/app.php` and setup the 'Datasources' and any other
-configuration relevant for your application.
+```bash
+bin/cake migrations migrate
+```
+
+3. Visiting the home page you will be prompter to login. There is a default username created: uaimedna@gmail.com with password: asdasd
+
+## Introduction
+I created the task using CakePHP framework and top of my own codebase providing the user interface (to save time)
+Main files to review related to this task:  
+
+```bash
+src/Shell/YoutubeShell.php
+
+src/Controller/VideosController.php
+src/Model/Table/VideosTable.php
+
+src/Template/Videos/index.ctp
+
+config/migraitons
+```
+
+The shell can be run from command line using: 
+
+```bash
+bin/cake youtube scrapeChanel 
+```
+Additional parameter can be provided to scrap a specified youtube chanel: 
+
+```bash
+bin/cake youtube scrapeChanel myChanelId
+```
+
+I think It would be reasonable to run this command every 10minutes.
+The current performance on my machine is 30videos/s including the statistic tracking and updating
+My first idea at improving the speed would be to add relevant indexes in mysql tables
+
+I used native html5 autocomplete so there is (sadly) no aditional JS involved
+
+Lastly if theres no time for setting up this project heres a snippet of how it looks inside:
+![](https://image.ibb.co/e9GX9S/Screen_Shot_2018_05_03_at_1_28_15_AM.png)
