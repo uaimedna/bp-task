@@ -38,9 +38,9 @@ APP=$(dirname "$CONSOLE")
 
 if [ $(basename $0) != 'cake' ]
 then
-    exec ../../../php-5.6/php "$CONSOLE"/cake.php $(basename $0) "$@"
+    exec php "$CONSOLE"/cake.php $(basename $0) "$@"
 else
-    exec ../../../php-5.6/php "$CONSOLE"/cake.php "$@"
+    exec php "$CONSOLE"/cake.php "$@"
 fi
 
 exit
