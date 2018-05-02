@@ -51,4 +51,5 @@ My first idea at improving the speed would be to add relevant indexes in mysql t
 I used native html5 autocomplete so there is (sadly) no aditional JS involved
 
 Lastly if theres no time for setting up this project heres a snippet of how it looks inside:
+
 ![](https://image.ibb.co/e9GX9S/Screen_Shot_2018_05_03_at_1_28_15_AM.png)
