@@ -16,7 +16,7 @@ composer install
 bin/cake migrations migrate
 ```
 
-3. Visiting the home page you will be prompter to login. There is a default username created: uaimedna@gmail.com with password: asdasd
+4. Visiting the home page you will be prompter to login. There is a default username created: uaimedna@gmail.com with password: asdasd
 
 ## Introduction
 I created the task using CakePHP framework and top of my own codebase providing the user interface (to save time)
