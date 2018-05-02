@@ -27,13 +27,13 @@ class UsersController extends AppController
     public function login()
     {
         if($this->Auth->user()){
-            return $this->redirect(['controller' => 'Pages', 'action' => 'dashboard']);
+            return $this->redirect(['controller' => 'Videos', 'action' => 'index']);
         }
         if ($this->request->is('post')) {
             $user = $this->Auth->identify();
             if ($user) {
                 $this->Auth->setUser($user);
-                return $this->redirect(['controller' => 'Pages', 'action' => 'dashboard']);
+                return $this->redirect(['controller' => 'Videos', 'action' => 'index']);
             } else {
                 $this->Flash->error(__('Username or password is incorrect'));
             }

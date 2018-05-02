@@ -83,4 +83,17 @@ class VideosTable extends Table
         $rules->add($rules->isUnique(['video_id']));
         return $rules;
     }
+
+    public function getAllTags() 
+    {
+        // would cache these results if video table got pretty big
+        $videos = $this->find('all');
+        $tags = [];
+        foreach ($videos as $video) {
+            $videoTags = explode(",", $video->tags);
+            $tags = array_merge($tags, $videoTags);
+        }
+
+        return array_unique($tags);
+    }
 }

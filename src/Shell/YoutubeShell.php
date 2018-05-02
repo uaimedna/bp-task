@@ -15,6 +15,7 @@
 namespace App\Shell;
 
 use Cake\Console\Shell;
+use Cake\Datasource\ConnectionManager;
 /**
  * Simple console wrapper around Psy\Shell.
  */
@@ -116,7 +117,7 @@ class YoutubeShell extends Shell
      */
     public function scrapeMultiChanel($chanelIds)
     {
-        //we could get chanel ids from doing random searching thorugh api or searching for related videos to those that we already have
+        //we could get chanel ids from doing random searching thorugh api or searching for related videos to those videos that we already have
         foreach ($chanelIds as $id) {
             $this->scrapeChanel($id);
         }
@@ -124,9 +125,13 @@ class YoutubeShell extends Shell
 
     public function scrapeChanel($chanelId = YoutubeShell::TEST_CHANNEL_ID)
     {
-        $videos = $this->getVideoList($chanelId);
+        $timeStart = microtime(true);
 
-        //create videos
+        $videos = $this->getVideoList($chanelId);
+        $connection = ConnectionManager::get('default');
+
+        $viewPerformance = [];
+        //create videos. These wont be inserted if a video with the samo video_id already exists
         foreach ($videos as $video) {
             $tags = $video['snippet']['tags'];
             $videoEntity = $this->Videos->newEntity([
@@ -135,17 +140,54 @@ class YoutubeShell extends Shell
                 'tags' => implode(",", $tags ? $tags : []),
                 'performanse_rating' => 1
             ]);
-            $this->Videos->save($videoEntity);
+            if ($this->Videos->save($videoEntity)) {
+                //if we werent able to save that means that that is a dublicate video id so lets only add statistics for non dublicates
+                $videoStatEntity = $this->VideoStats->newEntity([
+                    'video_id' => $video['id'],
+                    'view_count' => $video['statistics']['viewCount']
+                ]);
+                $this->VideoStats->save($videoStatEntity);
+                
+            };
         }
 
-        //update statistics
+        //finally lets update the performance rating for each video
+        //and this is the place where I would still use query builder, but for the sake of the task Ill put raw queries here
         foreach ($videos as $video) {
-            $videoStatEntity = $this->VideoStats->newEntity([
-                'video_id' => $video['id'],
-                'view_count' => $video['statistics']['viewCount']
-            ]);
-            $this->VideoStats->save($videoStatEntity);
+            $viewPerformance[$video['id']] = $this->getViewCountDiff($video['id'], $connection);
         }
+        $viewPerformanceAverage = array_sum($viewPerformance) / count($viewPerformance);
+
+        //and update those to the main video table
+        foreach ($videos as $video) {
+            $performanceRating = 1000 * (($viewPerformance[$video['id']] / $viewPerformanceAverage) - 1);
+            $res = $connection->execute('
+                UPDATE videos SET performanse_rating = ? WHERE video_id = ?
+            ', [(int)$performanceRating, $video['id']]);
+        }
+        
+        $timeEnd = microtime(true);
+        echo 'Update took: ' . ($timeEnd - $timeStart);
+    }
+
+    function getViewCountDiff($videoId, $connection) {
+        //assuming that we are already scanning this channel when the videos are added. 
+        //Then we only need to find all dates from first available date of the video to that date plus an hour
+        $res = $connection->execute('
+            SELECT * 
+            FROM video_stats
+            WHERE 
+                video_id = ?
+                AND DATE_SUB(created, INTERVAL 1 HOUR) <= (
+                    SELECT MIN(created) 
+                    FROM video_stats
+                    WHERE video_id = ?
+                )
+            ORDER BY created ASC
+        ', [$videoId, $videoId])->fetchAll('assoc');
+        
+        //diference of view count between first and last records
+        return $res[count($res)-1]['view_count'] - $res[0]['view_count'];
 
     }
 

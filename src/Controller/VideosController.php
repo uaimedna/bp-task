@@ -10,7 +10,6 @@ use App\Controller\AppController;
  */
 class VideosController extends AppController
 {
-
     /**
      * Index method
      *
@@ -18,94 +17,21 @@ class VideosController extends AppController
      */
     public function index()
     {
-        $videos = $this->paginate($this->Videos);
-
-        $this->set(compact('videos'));
-        $this->set('_serialize', ['videos']);
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Video id.
-     * @return \Cake\Network\Response|null
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $video = $this->Videos->get($id, [
-            'contain' => ['VideoStats']
-        ]);
-
-        $this->set('video', $video);
-        $this->set('_serialize', ['video']);
-    }
-
-    /**
-     * Add method
-     *
-     * @return \Cake\Network\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $video = $this->Videos->newEntity();
-        if ($this->request->is('post')) {
-            $video = $this->Videos->patchEntity($video, $this->request->data);
-            if ($this->Videos->save($video)) {
-                $this->Flash->success(__('The video has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The video could not be saved. Please, try again.'));
-        }
-        $videos = $this->Videos->Videos->find('list', ['limit' => 200]);
-        $this->set(compact('video', 'videos'));
-        $this->set('_serialize', ['video']);
-    }
-
-    /**
-     * Edit method
-     *
-     * @param string|null $id Video id.
-     * @return \Cake\Network\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $video = $this->Videos->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $video = $this->Videos->patchEntity($video, $this->request->data);
-            if ($this->Videos->save($video)) {
-                $this->Flash->success(__('The video has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The video could not be saved. Please, try again.'));
-        }
-        $videos = $this->Videos->Videos->find('list', ['limit' => 200]);
-        $this->set(compact('video', 'videos'));
-        $this->set('_serialize', ['video']);
-    }
-
-    /**
-     * Delete method
-     *
-     * @param string|null $id Video id.
-     * @return \Cake\Network\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
-    {
-        $this->request->allowMethod(['post', 'delete']);
-        $video = $this->Videos->get($id);
-        if ($this->Videos->delete($video)) {
-            $this->Flash->success(__('The video has been deleted.'));
+        $tag = $this->request->query('tag');
+        if ($tag) {
+            $videos = $this->Videos->find('all', [
+                'conditions' => [
+                    'Videos.tags LIKE' => "%" . $tag . "%"
+                ]
+            ]);
         } else {
-            $this->Flash->error(__('The video could not be deleted. Please, try again.'));
+            $videos = $this->Videos;
         }
 
-        return $this->redirect(['action' => 'index']);
+        $videos = $this->paginate($videos);
+        $tags = $this->Videos->getAllTags();
+
+        $this->set(compact('videos', 'tags'));
+        $this->set('_serialize', ['videos']);
     }
 }

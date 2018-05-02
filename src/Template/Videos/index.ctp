@@ -26,12 +26,30 @@
             </div>
         </div>
         <div class="box-body table-responsive">
+                <div class="form-group">
+                    <label>
+                        <?= $this->Form->label(__('Filter by keyowrd')); ?>
+                    </label>
+                    <form action="">
+                        <input type="text" class="form-control autocomplete" list="tag-list" name="tag">
+                        <datalist id="tag-list">
+                            <?php foreach ($tags as $tag) { ?>
+                                <option>
+                                    <?= $tag ?>
+                                </option>
+                            <?php } ?>
+                        </datalist>
+                        <div class="box-footer">
+                            <?= $this->Form->button(__('Filter'),['class' => 'btn btn-success']) ?>
+                        </div>
+                    </form>
+                </div>
             <table class="table table-hover">
                 <thead>
                 <tr>
                     <th><?= $this->Paginator->sort('video_id') ?></th>
                     <th><?= $this->Paginator->sort('tags') ?></th>
-                    <th><?= $this->Paginator->sort('performanse_rating') ?></th>
+                    <th><?= $this->Paginator->sort('performanse_rating', 'Performance') ?></th>
                     <th class="actions centered"></th>
                 </tr>
                 </thead>
@@ -41,7 +59,6 @@
                     <td><?= h($video->video_id) ?></td>
                     <td><?= h($video->tags) ?></td>
                     <td><?= $this->Number->format($video->performanse_rating) ?></td>
-
                 </tr>
                 <?php endforeach; ?>
                 </tbody>
@@ -60,3 +77,19 @@
         <!-- /.box-footer-->
     </div>
 </section>
+<script src="https://goodies.pixabay.com/javascript/auto-complete/auto-complete.js"></script>
+<script>
+    var auto = new autoComplete({
+        selector: '#tag-autocomplete',
+        minChars: 2,
+        source: function(term, suggest){
+            term = term.toLowerCase();
+            var choices = ['Test2', 'Test3', 'Test4'];
+            var matches = [];
+            for (i=0; i<choices.length; i++)
+                if (~choices[i].toLowerCase().indexOf(term)) matches.push(choices[i]);
+            suggest(matches);
+        }
+    });
+    console.log('wha');
+</script>
